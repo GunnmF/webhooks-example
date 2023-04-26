@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 22:42:03
+ * @LastEditTime: 2023-04-26 22:45:42
  * @LastEditors: moumou.v1@foxmail.com
  */
 
@@ -90,7 +90,7 @@ app.post('/api/webhooks', (req, res) => {
     }
     if (event === 'push') {
       let payload = JSON.parse(body)
-      console.log('payload', payload)
+      // console.log('payload', payload)
       let child = spawn('sh', [
         `./${repositoryMap[payload.repository.name]}.sh`,
       ])
@@ -101,7 +101,7 @@ app.post('/api/webhooks', (req, res) => {
       })
       child.stdout.on('end', () => {
         let log = Buffer.concat(logs)
-        console.log('log', JSON.parse(log))
+        console.log(log)
       })
     }
     res.setHeader('Content-Type', 'application/json')

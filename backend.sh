@@ -5,7 +5,9 @@ echo "清理代码"
 git reset --hard origin/main
 git clean -f
 echo "拉取代码"
-git pull origin/main
+git pull
+echo "开始编译"
+npm run build
 echo "构建镜像"
 docker build -t backend:1.0.0 .
 echo "清理镜像"
