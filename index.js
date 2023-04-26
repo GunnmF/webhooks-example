@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 22:11:32
+ * @LastEditTime: 2023-04-26 22:16:39
  * @LastEditors: moumou.v1@foxmail.com
  */
 
@@ -50,7 +50,7 @@ const sign = (body) =>
 // 跨域设置
 app.all('*', function (req, res, next) {
   res.setHeader('Access-Control-Allow-Credentials', true)
-//   res.setHeader('Access-Control-Allow-Origin', '*') // 添加这一行代码，代理配置不成功
+  //   res.setHeader('Access-Control-Allow-Origin', '*') // 添加这一行代码，代理配置不成功
   res.setHeader(
     'Access-Control-Allow-Methods',
     'POST, GET, OPTIONS, DELETE, PUT'
@@ -70,7 +70,6 @@ app.get('/', (req, res) => {
 app.post('/api/webhooks', (req, res) => {
   let buffers = []
   req.on('data', (data) => {
-    console.log('data')
     buffers.push(data)
   })
 
@@ -80,12 +79,12 @@ app.post('/api/webhooks', (req, res) => {
     let event = req.headers['x-github-event']
     let signature = req.headers['x-hub-signature']
     // 验证是否签名正确。如果验证不通过，则报告错误。
-    console.log(body)
+    console.log(body.toJSON())
+    console.log(JSON.stringify(body))
     if (signature !== sign(body)) {
       return res.send('Not Allowed')
     }
   })
-  console.log('webhooks');
   res.setHeader('Content-Type', 'application/json')
   res.send(
     JSON.stringify({
