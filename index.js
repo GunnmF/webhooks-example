@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 21:14:00
+ * @LastEditTime: 2023-04-26 21:18:10
  * @LastEditors: moumou.v1@foxmail.com
  */
 const express = require('express')
@@ -44,17 +44,20 @@ app.post('/api/webhooks', (req, res) => {
     let body = Buffer.concat(buffers) // 转换为字符串并将其存储在变量中。
     let event = req.headers['x-github-event']
     let signature = req.headers['x-hub-signature']
-    console.log(body, event, signature)
+    // console.log(event, signature)
     if (signature !== sign(body)) {
       return res.send('Not Allowed')
     }
+    res.setHeader('Content-Type', 'application/json')
+    res.send(
+      JSON.stringify({
+        signature,
+        event,
+        body,
+        ok: true,
+      })
+    )
   })
-  res.setHeader('Content-Type', 'application/json')
-  res.send(
-    JSON.stringify({
-      ok: true,
-    })
-  )
 })
 
 app.listen(port, () => {
