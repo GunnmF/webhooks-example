@@ -12,7 +12,7 @@ echo "开始编译"
 npm run build
 echo "构建镜像"
 docker build -t backend:1.0.0 .
-echo "清理镜像"
+echo "清理容器"
 docker stop backend
 docker rm -f backend
 echo "启动容器"
