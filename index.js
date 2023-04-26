@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 22:03:32
+ * @LastEditTime: 2023-04-26 22:05:07
  * @LastEditors: moumou.v1@foxmail.com
  */
 // const express = require('express')
@@ -19,11 +19,11 @@ let server = http.createServer((req, res) => {
   if (req.method === 'POST' && req.url === '/api/webhooks') {
     console.log('webhook-event');
     let buffers = []
-    res.on('data', (data) => {
+    req.on('data', (data) => {
       console.log('data')
       buffers.push(data)
     })
-    res.on('end', () => {
+    req.on('end', () => {
       // 这里发送结束条件，并处理数据。可以将处理的数据
       let body = Buffer.concat(buffers) // 转换为字符串并将其存储在变量中。
       let event = req.headers['x-github-event']
