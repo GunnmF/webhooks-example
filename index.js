@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 21:24:55
+ * @LastEditTime: 2023-04-26 21:31:57
  * @LastEditors: moumou.v1@foxmail.com
  */
 const express = require('express')
@@ -10,9 +10,8 @@ const crypto = require('crypto')
 const app = express()
 const port = 3001
 const SECRET = '123456'
-function sign(body) {
-  return `sha1=${crypto.createHmac('sha1', SECRET).update(body).digest('hex')}`
-}
+const sign = () =>
+  `sha1=${crypto.createHash('sha1').update(SECRET).digest('hex')}`
 
 // 跨域设置
 app.all('*', function (req, res, next) {
@@ -52,13 +51,10 @@ app.post('/api/webhooks', (req, res) => {
   })
   let event = req.headers['x-github-event']
   let signature = req.headers['x-hub-signature']
-  console.log(event, signature, req.body)
+  console.log(event, signature, sign())
   res.setHeader('Content-Type', 'application/json')
   res.send(
     JSON.stringify({
-      // signature,
-      // event,
-      // body,
       ok: true,
     })
   )
