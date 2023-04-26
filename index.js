@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 21:21:00
+ * @LastEditTime: 2023-04-26 21:23:16
  * @LastEditors: moumou.v1@foxmail.com
  */
 const express = require('express')
@@ -50,6 +50,9 @@ app.post('/api/webhooks', (req, res) => {
       return res.send('Not Allowed')
     }
   })
+  let event = req.headers['x-github-event']
+  let signature = req.headers['x-hub-signature']
+  console.log(event, signature)
   res.setHeader('Content-Type', 'application/json')
   res.send(
     JSON.stringify({
