@@ -7,7 +7,7 @@ echo "清理代码"
 git reset --hard origin/main
 git clean -f
 echo "拉取代码"
-git pull
+git pull origin main
 echo "开始编译"
 npm run build
 echo "构建镜像"
