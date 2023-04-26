@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 22:35:48
+ * @LastEditTime: 2023-04-26 22:42:03
  * @LastEditors: moumou.v1@foxmail.com
  */
 
@@ -94,22 +94,23 @@ app.post('/api/webhooks', (req, res) => {
       let child = spawn('sh', [
         `./${repositoryMap[payload.repository.name]}.sh`,
       ])
-      let buffers = []
+      console.log(repositoryMap[payload.repository.name])
+      let logs = []
       child.stdout.on('data', (data) => {
-        buffers.push(data)
+        logs.push(data)
       })
-      child.stdout.on('end', (data) => {
-        let log = Buffer.concat(buffers)
+      child.stdout.on('end', () => {
+        let log = Buffer.concat(logs)
         console.log('log', JSON.parse(log))
       })
     }
+    res.setHeader('Content-Type', 'application/json')
+    res.send(
+      JSON.stringify({
+        ok: true,
+      })
+    )
   })
-  res.setHeader('Content-Type', 'application/json')
-  res.send(
-    JSON.stringify({
-      ok: true,
-    })
-  )
 })
 
 app.listen(port, () => {
