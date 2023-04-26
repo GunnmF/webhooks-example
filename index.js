@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 22:00:17
+ * @LastEditTime: 2023-04-26 22:03:32
  * @LastEditors: moumou.v1@foxmail.com
  */
 // const express = require('express')
@@ -17,6 +17,7 @@ const sign = (body) =>
 let server = http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*') // 添加这一行代码，代理配置不成功
   if (req.method === 'POST' && req.url === '/api/webhooks') {
+    console.log('webhook-event');
     let buffers = []
     res.on('data', (data) => {
       console.log('data')
@@ -34,6 +35,7 @@ let server = http.createServer((req, res) => {
       }
     })
   }
+  console.log('webhook')
   res.setHeader('Content-Type', 'application/json')
   res.end(
     JSON.stringify({
