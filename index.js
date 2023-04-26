@@ -37,6 +37,7 @@ app.post('/api/webhooks', (req, res) => {
   // console.log('webhook', res,req)
   let buffers = []
   res.on('data', (data) => {
+    console.log('data');
     buffers.push(data)
   })
   res.on('end', () => {
