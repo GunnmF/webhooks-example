@@ -12,4 +12,4 @@ echo "清理镜像"
 docker stop backend
 docker rm -f backend
 echo "启动容器"
-docker run -p 2001:3000 --name backend -d backend:1.0.0
+docker run -p 3002:3000 --name backend -d backend:1.0.0
