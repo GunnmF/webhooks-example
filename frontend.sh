@@ -9,9 +9,9 @@ git clean -f
 echo "拉取代码"
 git pull origin main
 echo "安装依赖"
-npm i
+pnpm i
 echo "开始编译"
-npm run build
+pnpm run build
 echo "构建镜像"
 docker build -t frontend:1.0.0 .
 echo "清理容器"
