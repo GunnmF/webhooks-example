@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 20:09:16
+ * @LastEditTime: 2023-04-26 20:41:35
  * @LastEditors: moumou.v1@foxmail.com
  */
 const express = require('express')
@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 app.post('/api/webhooks', (req, res) => {
-  console.log('webhook', JSON.stringify(req), JSON.stringify(res))
+  console.log('webhook', res,req)
   res.setHeader('Content-Type', 'application/json')
   res.send(
     JSON.stringify({
