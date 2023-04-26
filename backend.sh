@@ -7,6 +7,7 @@ git clean -f
 echo "拉取代码"
 git pull
 echo "开始编译"
+. /root/.bashrc
 nvn use 16.18.0
 npm run build
 echo "构建镜像"
