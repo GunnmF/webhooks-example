@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 21:40:15
+ * @LastEditTime: 2023-04-26 21:44:06
  * @LastEditors: moumou.v1@foxmail.com
  */
 const express = require('express')
@@ -11,7 +11,7 @@ const app = express()
 const port = 3001
 const SECRET = '123456'
 const sign = (body) =>
-  `sha1=${crypto.createHash('sha1', SECRET).update(body).digest('hex')}`
+  `sha1=${crypto.createHmac('sha1', SECRET).update(body).digest('hex')}`
 
 // 跨域设置
 app.all('*', function (req, res, next) {
