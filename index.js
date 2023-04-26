@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 21:57:26
+ * @LastEditTime: 2023-04-26 22:00:17
  * @LastEditors: moumou.v1@foxmail.com
  */
 // const express = require('express')
@@ -30,12 +30,12 @@ let server = http.createServer((req, res) => {
       // 验证是否签名正确。如果验证不通过，则报告错误。
       console.log(event, signature, sign(body))
       if (signature !== sign(body)) {
-        return res.send('Not Allowed')
+        return res.end('Not Allowed')
       }
     })
   }
   res.setHeader('Content-Type', 'application/json')
-  res.send(
+  res.end(
     JSON.stringify({
       ok: true,
     })
