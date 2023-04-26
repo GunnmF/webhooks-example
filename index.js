@@ -2,17 +2,21 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 22:18:02
+ * @LastEditTime: 2023-04-26 22:29:01
  * @LastEditors: moumou.v1@foxmail.com
  */
 
+const { spawn } = require('child_process')
 const crypto = require('crypto')
 const app = require('express')()
 const port = 3001
 const SECRET = '123456'
 const sign = (body) =>
   `sha1=${crypto.createHmac('sha1', SECRET).update(body).digest('hex')}`
-
+const repositoryMap = {
+  'frontend-example': 'frontend',
+  'backend-example': 'backend',
+}
 // const http = require('http')
 // let server = http.createServer((req, res) => {
 //   res.setHeader('Access-Control-Allow-Origin', '*') // 添加这一行代码，代理配置不成功
@@ -47,6 +51,7 @@ const sign = (body) =>
 //   console.log(`Example app listening at http://localhost:${port}`)
 // )
 
+//express
 // 跨域设置
 app.all('*', function (req, res, next) {
   res.setHeader('Access-Control-Allow-Credentials', true)
@@ -79,10 +84,22 @@ app.post('/api/webhooks', (req, res) => {
     let event = req.headers['x-github-event']
     let signature = req.headers['x-hub-signature']
     // 验证是否签名正确。如果验证不通过，则报告错误。
-    console.log(body.toJSON())
-    console.log(JSON.stringify(body))
     if (signature !== sign(body)) {
       return res.send('Not Allowed')
+    }
+    if (event === 'push') {
+      let payload = JSON.parse(body)
+      let child = spawn('sh', [
+        `./${repositoryMap[payload.repository.name]}.sh`,
+      ])
+      let buffers = []
+      child.stdout.on('data', (data) => {
+        buffers.push(data)
+      })
+      child.stdout.on('end', (data) => {
+        let log = Buffer.concat(buffers)
+        console.log(log)
+      })
     }
   })
   res.setHeader('Content-Type', 'application/json')
