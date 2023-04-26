@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 22:29:01
+ * @LastEditTime: 2023-04-26 22:35:48
  * @LastEditors: moumou.v1@foxmail.com
  */
 
@@ -85,10 +85,12 @@ app.post('/api/webhooks', (req, res) => {
     let signature = req.headers['x-hub-signature']
     // 验证是否签名正确。如果验证不通过，则报告错误。
     if (signature !== sign(body)) {
+      console.log('签名不对')
       return res.send('Not Allowed')
     }
     if (event === 'push') {
       let payload = JSON.parse(body)
+      console.log('payload', payload)
       let child = spawn('sh', [
         `./${repositoryMap[payload.repository.name]}.sh`,
       ])
@@ -98,7 +100,7 @@ app.post('/api/webhooks', (req, res) => {
       })
       child.stdout.on('end', (data) => {
         let log = Buffer.concat(buffers)
-        console.log(log)
+        console.log('log', JSON.parse(log))
       })
     }
   })
