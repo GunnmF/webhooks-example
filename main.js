@@ -3,7 +3,7 @@ const crypto = require('crypto')
 const { spawn } = require('child_process')
 
 const SECRET = '123456'
-const port = 3002
+const port = 3003
 const repositoryMap = {
   'frontend-example': 'frontend',
   'backend-example': 'backend',
