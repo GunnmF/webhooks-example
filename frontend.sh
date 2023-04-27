@@ -1,5 +1,5 @@
 #!/bin/bash
-WORK_PATH='/workdir/frontend-example'
+WORK_PATH='/app/frontend-example'
 cd $WORK_PATH
 echo "清理代码"
 git reset --hard origin/main
