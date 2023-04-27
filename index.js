@@ -2,11 +2,11 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-27 17:46:26
+ * @LastEditTime: 2023-04-27 17:52:22
  * @LastEditors: moumou.v1@foxmail.com
  */
 
-const { spawn } = require('child_process')
+const { exec } = require('child_process')
 const { join } = require('path')
 const crypto = require('crypto')
 const app = require('express')()
@@ -59,22 +59,36 @@ app.post('/api/webhooks', (req, res) => {
     console.log('签名正确')
     if (event === 'push') {
       let payload = JSON.parse(body)
-      console.log(
-        join(__dirname, `./${repositoryMap[payload.repository.name]}.sh`)
+      exec(
+        `sh ${join(
+          __dirname,
+          `./${repositoryMap[payload.repository.name]}.sh`
+        )}`,
+        (error, stdout, stderr) => {
+          if (error) {
+            console.error(`exec error: ${error}`)
+            return
+          }
+          console.log(`stdout: ${stdout}`)
+          console.error(`stderr: ${stderr}`)
+        }
       )
+      // console.log(
+      //   join(__dirname, `./${repositoryMap[payload.repository.name]}.sh`)
+      // )
       // console.log('payload', payload)
-      let child = spawn('sh', [
-        join(__dirname, `./${repositoryMap[payload.repository.name]}.sh`),
-      ])
-      console.log(repositoryMap[payload.repository.name])
-      let logs = []
-      child.stdout.on('data', (data) => {
-        logs.push(data)
-      })
-      child.stdout.on('end', () => {
-        let log = Buffer.concat(logs)
-        console.log(log)
-      })
+      // let child = spawn('sh', [
+      //   join(__dirname, `./${repositoryMap[payload.repository.name]}.sh`),
+      // ])
+      // console.log(repositoryMap[payload.repository.name])
+      // let logs = []
+      // child.stdout.on('data', (data) => {
+      //   logs.push(data)
+      // })
+      // child.stdout.on('end', () => {
+      //   let log = Buffer.concat(logs)
+      //   console.log(log)
+      // })
     }
     res.setHeader('Content-Type', 'application/json')
     res.send(
