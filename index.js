@@ -2,23 +2,13 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-27 17:52:22
+ * @LastEditTime: 2023-04-27 20:10:25
  * @LastEditors: moumou.v1@foxmail.com
  */
 
-const { exec } = require('child_process')
-const { join } = require('path')
-const crypto = require('crypto')
 const app = require('express')()
-const port = 3003
-const SECRET = '123456'
-const sign = (body) =>
-  `sha1=${crypto.createHmac('sha1', SECRET).update(body).digest('hex')}`
-
-const repositoryMap = {
-  'frontend-example': 'frontend',
-  'backend-example': 'backend',
-}
+const { generateSign, executeSh } = require('./utils')
+const PORT = 3000
 
 // 跨域设置
 app.all('*', function (req, res, next) {
@@ -51,48 +41,22 @@ app.post('/api/webhooks', (req, res) => {
     let body = Buffer.concat(buffers) // 转换为字符串并将其存储在变量中。
     let event = req.headers['x-github-event']
     let signature = req.headers['x-hub-signature']
+    res.setHeader('Content-Type', 'application/json')
     // 验证是否签名正确。如果验证不通过，则报告错误。
-    if (signature !== sign(body)) {
-      console.log('签名不对')
-      return res.send('Not Allowed')
+    if (signature !== generateSign(body)) {
+      console.log('签名错误')
+      return res.send(
+        JSON.stringify({
+          ok: false,
+        })
+      )
     }
     console.log('签名正确')
     if (event === 'push') {
       let payload = JSON.parse(body)
-      console.log('开始执行命令');
-      exec(
-        `sh ${join(
-          __dirname,
-          `./${repositoryMap[payload.repository.name]}.sh`
-        )}`,
-        (error, stdout, stderr) => {
-          if (error) {
-            console.error(`exec error: ${error}`)
-            return
-          }
-          console.log('命令结束');
-          console.log(`stdout: ${stdout}`)
-          console.error(`stderr: ${stderr}`)
-        }
-      )
-      // console.log(
-      //   join(__dirname, `./${repositoryMap[payload.repository.name]}.sh`)
-      // )
-      // console.log('payload', payload)
-      // let child = spawn('sh', [
-      //   join(__dirname, `./${repositoryMap[payload.repository.name]}.sh`),
-      // ])
-      // console.log(repositoryMap[payload.repository.name])
-      // let logs = []
-      // child.stdout.on('data', (data) => {
-      //   logs.push(data)
-      // })
-      // child.stdout.on('end', () => {
-      //   let log = Buffer.concat(logs)
-      //   console.log(log)
-      // })
+      console.log('执行命令')
+      executeSh(payload.repository.name)
     }
-    res.setHeader('Content-Type', 'application/json')
     res.send(
       JSON.stringify({
         ok: true,
@@ -101,6 +65,6 @@ app.post('/api/webhooks', (req, res) => {
   })
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+app.listen(PORT, () => {
+  console.log(`服务运行在 ${PORT} 端口`)
 })
