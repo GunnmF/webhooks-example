@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-27 17:58:56
+ * @LastEditTime: 2023-04-27 18:04:23
  * @LastEditors: moumou.v1@foxmail.com
  */
 
@@ -59,6 +59,7 @@ app.post('/api/webhooks', (req, res) => {
     console.log('签名正确')
     if (event === 'push') {
       let payload = JSON.parse(body)
+      console.log('开始执行命令');
       exec(
         `sh ./${repositoryMap[payload.repository.name]}.sh`,
         (error, stdout, stderr) => {
