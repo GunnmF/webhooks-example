@@ -2,13 +2,13 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-27 17:45:07
+ * @LastEditTime: 2023-04-27 17:46:26
  * @LastEditors: moumou.v1@foxmail.com
  */
 
 const { spawn } = require('child_process')
-const crypto = require('crypto')
 const { join } = require('path')
+const crypto = require('crypto')
 const app = require('express')()
 const port = 3003
 const SECRET = '123456'
@@ -63,18 +63,18 @@ app.post('/api/webhooks', (req, res) => {
         join(__dirname, `./${repositoryMap[payload.repository.name]}.sh`)
       )
       // console.log('payload', payload)
-      // let child = spawn('sh', [
-      //   `./${repositoryMap[payload.repository.name]}.sh`,
-      // ])
-      // console.log(repositoryMap[payload.repository.name])
-      // let logs = []
-      // child.stdout.on('data', (data) => {
-      //   logs.push(data)
-      // })
-      // child.stdout.on('end', () => {
-      //   let log = Buffer.concat(logs)
-      //   console.log(log)
-      // })
+      let child = spawn('sh', [
+        join(__dirname, `./${repositoryMap[payload.repository.name]}.sh`),
+      ])
+      console.log(repositoryMap[payload.repository.name])
+      let logs = []
+      child.stdout.on('data', (data) => {
+        logs.push(data)
+      })
+      child.stdout.on('end', () => {
+        let log = Buffer.concat(logs)
+        console.log(log)
+      })
     }
     res.setHeader('Content-Type', 'application/json')
     res.send(
