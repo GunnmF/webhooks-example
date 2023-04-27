@@ -6,6 +6,8 @@ git reset --hard origin/main
 git clean -f
 echo "拉取代码"
 git pull origin main
+echo "安装依赖"
+pnpm i
 echo "开始编译"
 pnpm run build
 echo "构建镜像"

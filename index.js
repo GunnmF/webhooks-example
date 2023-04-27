@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-27 17:52:22
+ * @LastEditTime: 2023-04-27 17:58:56
  * @LastEditors: moumou.v1@foxmail.com
  */
 
@@ -60,10 +60,7 @@ app.post('/api/webhooks', (req, res) => {
     if (event === 'push') {
       let payload = JSON.parse(body)
       exec(
-        `sh ${join(
-          __dirname,
-          `./${repositoryMap[payload.repository.name]}.sh`
-        )}`,
+        `sh ./${repositoryMap[payload.repository.name]}.sh`,
         (error, stdout, stderr) => {
           if (error) {
             console.error(`exec error: ${error}`)
