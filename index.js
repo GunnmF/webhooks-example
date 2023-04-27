@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-27 16:46:18
+ * @LastEditTime: 2023-04-27 17:42:26
  * @LastEditors: moumou.v1@foxmail.com
  */
 
@@ -55,22 +55,25 @@ app.post('/api/webhooks', (req, res) => {
       console.log('签名不对')
       return res.send('Not Allowed')
     }
-    console.log('签名正确');
+    console.log('签名正确')
     if (event === 'push') {
       let payload = JSON.parse(body)
-      console.log('payload', payload)
-      let child = spawn('sh', [
-        `./${repositoryMap[payload.repository.name]}.sh`,
-      ])
-      console.log(repositoryMap[payload.repository.name])
-      let logs = []
-      child.stdout.on('data', (data) => {
-        logs.push(data)
-      })
-      child.stdout.on('end', () => {
-        let log = Buffer.concat(logs)
-        console.log(log)
-      })
+      console.log(
+        join(__dirname, `./${repositoryMap[payload.repository.name]}.sh`)
+      )
+      // console.log('payload', payload)
+      // let child = spawn('sh', [
+      //   `./${repositoryMap[payload.repository.name]}.sh`,
+      // ])
+      // console.log(repositoryMap[payload.repository.name])
+      // let logs = []
+      // child.stdout.on('data', (data) => {
+      //   logs.push(data)
+      // })
+      // child.stdout.on('end', () => {
+      //   let log = Buffer.concat(logs)
+      //   console.log(log)
+      // })
     }
     res.setHeader('Content-Type', 'application/json')
     res.send(

@@ -14,4 +14,4 @@ echo "清理容器"
 docker stop backend
 docker rm -f backend
 echo "启动容器"
-docker run -p 3005:3000 --name backend -d backend:1.0.0
+docker run -p 3005:3000 --name backend --restart always -d backend:1.0.0
