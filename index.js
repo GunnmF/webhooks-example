@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-28 00:05:52
+ * @LastEditTime: 2023-04-28 00:09:05
  * @LastEditors: moumou.v1@foxmail.com
  */
 
@@ -44,14 +44,14 @@ app.post('/api/webhooks', (req, res) => {
     res.setHeader('Content-Type', 'application/json')
     // 验证是否签名正确。如果验证不通过，则报告错误。
     if (signature !== generateSign(body)) {
-      console.log('校验失败')
+      console.log('签名校验失败')
       return res.send(
         JSON.stringify({
           ok: false,
         })
       )
     }
-    console.log('校验成功')
+    console.log('签名校验成功')
     if (event === 'push') {
       let payload = JSON.parse(body)
       console.log('仓库:', payload.repository.name)
