@@ -1,11 +1,4 @@
 #!/bin/bash
-###
- # @Description: 
- # @Author: moumou.v1@foxmail.com
- # @Date: 2023-04-26 00:00:50
- # @LastEditTime: 2023-04-27 16:39:19
- # @LastEditors: moumou.v1@foxmail.com
-### 
 WORK_PATH='/usr/share/projects/backend-example'
 . /root/.bashrc
 nvm use 16.18.0
