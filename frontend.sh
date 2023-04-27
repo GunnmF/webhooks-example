@@ -18,4 +18,4 @@ echo "清理容器"
 docker stop frontend
 docker rm -f frontend
 echo "启动容器"
-docker run -p 3000:80 --name frontend -d frontend:1.0.0
+docker run -p 3004:80 --name frontend -d frontend:1.0.0
