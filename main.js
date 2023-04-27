@@ -3,7 +3,7 @@ const crypto = require('crypto')
 const { spawn } = require('child_process')
 
 const SECRET = '123456'
-const port = 3001
+const port = 3002
 const repositoryMap = {
   'frontend-example': 'frontend',
   'backend-example': 'backend',
@@ -43,20 +43,20 @@ const server = http.createServer((req, res) => {
         child.stdout.on('data', (data) => {
           logs.push(data)
         })
-        
+
         child.stdout.on('end', () => {
           let log = Buffer.concat(logs)
           console.log(log)
         })
     })
+    console.log('webhook')
+    res.setHeader('Content-Type', 'application/json')
+    res.end(
+      JSON.stringify({
+        ok: true,
+      })
+    )
   }
-  console.log('webhook')
-  res.setHeader('Content-Type', 'application/json')
-  res.end(
-    JSON.stringify({
-      ok: true,
-    })
-  )
 })
 
 server.listen(port, () =>

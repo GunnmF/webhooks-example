@@ -2,18 +2,18 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-26 22:45:42
+ * @LastEditTime: 2023-04-27 16:34:07
  * @LastEditors: moumou.v1@foxmail.com
  */
 
 const { spawn } = require('child_process')
 const crypto = require('crypto')
 const app = require('express')()
-const port = 3001
+const port = 3002
 const SECRET = '123456'
 const sign = (body) =>
   `sha1=${crypto.createHmac('sha1', SECRET).update(body).digest('hex')}`
-  
+
 const repositoryMap = {
   'frontend-example': 'frontend',
   'backend-example': 'backend',
