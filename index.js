@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-27 20:10:25
+ * @LastEditTime: 2023-04-27 23:31:45
  * @LastEditors: moumou.v1@foxmail.com
  */
 
@@ -27,7 +27,7 @@ app.all('*', function (req, res, next) {
 
 app.get('/', (req, res) => {
   console.log('Hello World!')
-  res.send('Hello World!')
+  res.send('修改后')
 })
 
 app.post('/api/webhooks', (req, res) => {
