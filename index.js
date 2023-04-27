@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-28 00:41:31
+ * @LastEditTime: 2023-04-28 00:47:02
  * @LastEditors: moumou.v1@foxmail.com
  */
 
@@ -54,9 +54,8 @@ app.post('/api/webhooks', (req, res) => {
     console.log('签名校验成功')
     if (event === 'push') {
       let payload= JSON.parse(body)
-      console.log('仓库:', payload.repository.name)
-      console.log('提交人:', payload.head_commit)
-      // console.log('邮箱:', head_commit)
+      console.log('提交仓库:', payload.repository.name)
+      console.log('最近提交信息:', payload.head_commit)
       console.log('执行脚本构建镜像')
       executeSh(payload.repository.name)
     }
