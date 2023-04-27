@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-27 18:04:23
+ * @LastEditTime: 2023-04-27 17:52:22
  * @LastEditors: moumou.v1@foxmail.com
  */
 
@@ -61,12 +61,16 @@ app.post('/api/webhooks', (req, res) => {
       let payload = JSON.parse(body)
       console.log('开始执行命令');
       exec(
-        `sh ./${repositoryMap[payload.repository.name]}.sh`,
+        `sh ${join(
+          __dirname,
+          `./${repositoryMap[payload.repository.name]}.sh`
+        )}`,
         (error, stdout, stderr) => {
           if (error) {
             console.error(`exec error: ${error}`)
             return
           }
+          console.log('命令结束');
           console.log(`stdout: ${stdout}`)
           console.error(`stderr: ${stderr}`)
         }
