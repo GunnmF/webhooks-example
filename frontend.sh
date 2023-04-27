@@ -1,7 +1,5 @@
 #!/bin/bash
-WORK_PATH='/usr/share/projects/frontend-example'
-. /root/.bashrc
-nvm use 16.18.0
+WORK_PATH='/workdir/frontend-example'
 cd $WORK_PATH
 echo "清理代码"
 git reset --hard origin/main
