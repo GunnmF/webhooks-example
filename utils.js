@@ -32,6 +32,7 @@ const generateSign = (body) => {
 // 执行SH脚本
 const executeSh = (repositoryName = REPOSITORY['webhooks-example']) => {
   if (repositoryName === REPOSITORY['webhooks-example']) {
+    console.log('请求更新');
     return axios
       .get('http://localhost:3001')
       .then((res) => {

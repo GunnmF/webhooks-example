@@ -2,13 +2,13 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-28 11:53:31
+ * @LastEditTime: 2023-04-28 12:06:46
  * @LastEditors: moumou.v1@foxmail.com
  */
 
 const app = require('express')()
 const cors = require('cors')() //允许跨域请求的CORS请求。
-const { generateSign, executeSh } = require('./utils')
+const { executeSh } = require('./utils')
 const PORT = 3001
 app.use(cors)
 
