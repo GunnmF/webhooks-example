@@ -1,10 +1,3 @@
-/*
- * @Description:
- * @Author: moumou.v1@foxmail.com
- * @Date: 2023-04-27 19:54:06
- * @LastEditTime: 2023-04-28 12:17:58
- * @LastEditors: moumou.v1@foxmail.com
- */
 const { createHmac } = require('crypto')
 const { exec } = require('child_process')
 const { join } = require('path')
