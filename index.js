@@ -1,12 +1,12 @@
 const app = require('express')()
 const cors = require('cors')() //允许跨域请求的CORS请求。
-const { generateSign, executeSh } = require('./utils')
+const { genSign, executeSh } = require('./utils')
 const PORT = 3000
 
 app.use(cors)
 
 app.get('/', (req, res) => {
-  console.log('Hello World!')
+  console.log('webhooks')
   res.send('webhooks')
 })
 
@@ -23,7 +23,7 @@ app.post('/api/webhooks', (req, res) => {
     let signature = req.headers['x-hub-signature']
     res.setHeader('Content-Type', 'application/json')
     // 验证是否签名正确。如果验证不通过，则报告错误。
-    if (signature !== generateSign(body)) {
+    if (signature !== genSign(body)) {
       console.log('签名校验失败')
       return res.send(
         JSON.stringify({

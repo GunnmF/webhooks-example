@@ -3,23 +3,32 @@ const { exec } = require('child_process')
 const { join } = require('path')
 const axios = require('axios')
 const jwt = require('jsonwebtoken')
-const { SECRET, REPOSITORY } = require('./config')
+const { SECRET, REPOSITORY, PLATFORM } = require('./config')
 // 生成签名
-const generateSign = (body) => {
-  const timestamp = new Date().getTime()
-  const secret = 'this is secret'
-  const stringToSign = `${timestamp}\n${secret}`
-  const hmacCode = createHmac('sha256', secret)
-    .update(stringToSign)
-    .digest('hex')
-  const sign = encodeURIComponent(btoa(hmacCode))
-  const signature = `sha256=${createHmac('sha256', SECRET)
-    .update(body)
-    .digest('hex')}`
-  console.log(signature)
-  console.log(signRequestBody(SECRET, body))
-  console.log(sign)
-  return `sha1=${createHmac('sha1', SECRET).update(body).digest('hex')}`
+const genSign = (body) => {
+  // const timestamp = new Date().getTime()
+  // const secret = 'this is secret'
+  // const stringToSign = `${timestamp}\n${secret}`
+  // const hmacCode = createHmac('sha256', secret)
+  //   .update(stringToSign)
+  //   .digest('hex')
+  // const sign = encodeURIComponent(btoa(hmacCode))
+  switch (PLATFORM) {
+    case 'gitee':
+      return `sha256=${createHmac('sha256', SECRET).update(body).digest('hex')}`
+      break
+    case 'github':
+      return `sha1=${createHmac('sha1', SECRET).update(body).digest('hex')}`
+      break
+    case 'gitlab':
+      return `Bearer ${jwt.sign({ payload: body }, SECRET, {
+        algorithm: 'HS256',
+        header: { alg: 'HS256', typ: 'JWT' },
+      })}`
+      break
+    default:
+      return throw new Error('Unrecognized platform')
+  }
 }
 
 // 执行SH脚本
@@ -38,12 +47,4 @@ const executeSh = (repositoryName = REPOSITORY['webhooks-example']) => {
   )
 }
 
-// gitlab
-function signRequestBody(secret, body) {
-  const header = { alg: 'HS256', typ: 'JWT' }
-  const payload = { payload: body }
-  const token = jwt.sign(payload, secret, { algorithm: 'HS256', header })
-  return `Bearer ${token}`
-}
-
-module.exports = { generateSign, executeSh }
+module.exports = { genSign, executeSh }
