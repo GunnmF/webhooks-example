@@ -27,7 +27,7 @@ const genSign = (body) => {
       })}`
       break
     default:
-      return throw new Error('Unrecognized platform')
+      return new Error('Unrecognized platform')
   }
 }
 
