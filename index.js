@@ -2,28 +2,16 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-25 18:49:18
- * @LastEditTime: 2023-04-28 00:47:02
+ * @LastEditTime: 2023-04-28 11:54:33
  * @LastEditors: moumou.v1@foxmail.com
  */
 
 const app = require('express')()
+const cors = require('cors')() //允许跨域请求的CORS请求。
 const { generateSign, executeSh } = require('./utils')
 const PORT = 3000
 
-// 跨域设置
-app.all('*', function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Credentials', true)
-  //   res.setHeader('Access-Control-Allow-Origin', '*') // 添加这一行代码，代理配置不成功
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'POST, GET, OPTIONS, DELETE, PUT'
-  )
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, If-Modified-Since'
-  )
-  next()
-})
+app.use(cors)
 
 app.get('/', (req, res) => {
   console.log('Hello World!')
@@ -53,7 +41,7 @@ app.post('/api/webhooks', (req, res) => {
     }
     console.log('签名校验成功')
     if (event === 'push') {
-      let payload= JSON.parse(body)
+      let payload = JSON.parse(body)
       console.log('提交仓库:', payload.repository.name)
       console.log('最近提交信息:', payload.head_commit)
       console.log('执行脚本构建镜像')

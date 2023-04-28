@@ -2,12 +2,13 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-27 19:54:06
- * @LastEditTime: 2023-04-28 11:40:16
+ * @LastEditTime: 2023-04-28 11:57:06
  * @LastEditors: moumou.v1@foxmail.com
  */
 const { createHmac } = require('crypto')
 const { exec } = require('child_process')
 const { join } = require('path')
+const axios = require('axios')
 const jwt = require('jsonwebtoken')
 const { SECRET, REPOSITORY } = require('./config')
 // 生成签名
@@ -29,7 +30,17 @@ const generateSign = (body) => {
 }
 
 // 执行SH脚本
-const executeSh = (repositoryName) => {
+const executeSh = (repositoryName = REPOSITORY['webhooks-example']) => {
+  if (repositoryName === REPOSITORY['webhooks-example']) {
+    return axios
+      .get('http://localhost:3001')
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
   exec(
     `sh ${join(__dirname, `./${REPOSITORY[repositoryName]}.sh`)}`,
     (error, stdout, stderr) => {
