@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-27 19:54:06
- * @LastEditTime: 2023-04-28 00:07:11
+ * @LastEditTime: 2023-04-28 11:16:09
  * @LastEditors: moumou.v1@foxmail.com
  */
 const { createHmac } = require('crypto')
@@ -11,8 +11,16 @@ const { join } = require('path')
 const { SECRET, REPOSITORY } = require('./config')
 
 // 生成签名
-const generateSign = (body) =>
-  `sha1=${createHmac('sha1', SECRET).update(body).digest('hex')}`
+const generateSign = (body) => {
+  const timestamp = new Date().getTime()
+  const secret = 'this is secret'
+  const stringToSign = `${timestamp}\n${secret}`
+  const hmacCode = createHmac('sha1', secret).update(stringToSign).digest('hex')
+  const sign = encodeURIComponent(btoa(hmacCode))
+  console.log(timestamp)
+  console.log(sign)
+  return `sha1=${createHmac('sha1', SECRET).update(body).digest('hex')}`
+}
 
 // 执行SH脚本
 const executeSh = (repositoryName) => {
