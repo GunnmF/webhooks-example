@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-27 19:54:06
- * @LastEditTime: 2023-04-28 11:34:13
+ * @LastEditTime: 2023-04-28 11:37:14
  * @LastEditors: moumou.v1@foxmail.com
  */
 const { createHmac } = require('crypto')
@@ -19,8 +19,7 @@ const generateSign = (body) => {
     .update(stringToSign)
     .digest('hex')
   const sign = encodeURIComponent(btoa(hmacCode))
-  const signature = `sha256=${crypto
-    .createHmac('sha256', SECRET)
+  const signature = `sha256=${createHmac('sha256', SECRET)
     .update(body)
     .digest('hex')}`
   console.log(timestamp, signature)
