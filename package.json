@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "pm2 start ./index.js --name webhooks --watch && pm2 start ./update.js --name update --watch && pm2 log",
+    "dev": "pm2 start ./index.js --name webhooks --watch && pm2 log",
     "build": "docker build -t webhooks:1.0.0 ."
   },
   "keywords": [],
