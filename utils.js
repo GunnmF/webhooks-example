@@ -2,7 +2,7 @@
  * @Description:
  * @Author: moumou.v1@foxmail.com
  * @Date: 2023-04-27 19:54:06
- * @LastEditTime: 2023-04-28 12:14:03
+ * @LastEditTime: 2023-04-28 12:17:58
  * @LastEditors: moumou.v1@foxmail.com
  */
 const { createHmac } = require('crypto')
@@ -45,6 +45,7 @@ const executeSh = (repositoryName = REPOSITORY['webhooks-example']) => {
   )
 }
 
+// gitlab
 function signRequestBody(secret, body) {
   const header = { alg: 'HS256', typ: 'JWT' }
   const payload = { payload: body }
